@@ -12,6 +12,7 @@ import com.customer.accounts.repository.CustomerRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -57,7 +58,7 @@ public class BankAccountsService {
 
     if(customerRepository.customerExistsByCustomerId(customer.getCustomerId())){
       if(bankAccountsRepository.accountExistsByCustomerId(customer.getCustomerId(), accountType))
-        throw new BusinessException("Duplicate Account Opening Requested!");
+        throw new BusinessException(HttpStatus.BAD_REQUEST,"Duplicate Account Opening Requested!" );
       else{
         account.setCustomerId(customer.getCustomerId());
         account.setAccountOpenDate(OffsetDateTime.now());

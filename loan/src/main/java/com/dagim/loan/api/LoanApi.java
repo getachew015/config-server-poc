@@ -34,20 +34,15 @@ public class LoanApi {
 
   @GetMapping(path = "/customer", produces = "application/json")
   public ResponseEntity<?> simulateLoanRepaymentPlan(@RequestHeader(required = true) String customerId,
-      @RequestHeader(required = true) double loanAmount){
+                                                     @RequestHeader(required = true) double loanAmount){
 
-    try {
-      return new ResponseEntity<>(loanSimulationService.simulateLoanPaymentPlan(customerId,loanAmount), HttpStatus.OK);
-    } catch (BusinessException businessException) {
-      return new ResponseEntity<>(businessException.getMessage(), HttpStatus.BAD_REQUEST);
-    }
+    return new ResponseEntity<>(loanSimulationService.simulateLoanPaymentPlan(customerId,loanAmount), HttpStatus.OK);
 
   }
 
   public ResponseEntity<?> findCustomerServiceUnReachable(Exception exception ){
-    log.info("Exception Occurred ..."+exception.getMessage());
-    throw new BusinessException("Bank Accounts Service Unreachable !");
-//    return new ResponseEntity<>(, HttpStatus.FAILED_DEPENDENCY);
+
+    throw new BusinessException(HttpStatus.FAILED_DEPENDENCY, "Bank Accounts Service Unreachable !");
   }
 
 }

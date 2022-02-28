@@ -11,6 +11,7 @@ import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -32,8 +33,7 @@ public class LoanSimulationService {
   public LoanSimulationService(){
 
   }
-  public SimulatedLoan simulateLoanPaymentPlan(String customerId, double loanAmount)
-      throws BusinessException {
+  public SimulatedLoan simulateLoanPaymentPlan(String customerId, double loanAmount) {
     SimulatedLoan simulatedLoan = new SimulatedLoan();
     LoanRepaymentPlan repaymentPlan;
     Set<LoanRepaymentPlan> repaymentPlanList = new HashSet<>();
@@ -52,7 +52,7 @@ public class LoanSimulationService {
         simulatedLoan.setRepaymentPlan(repaymentPlanList);
         return loanSimulationRepository.saveAndFlush(simulatedLoan);
     }else
-      throw new BusinessException("Invalid Loan Amount Requested!");
+      throw new BusinessException(HttpStatus.BAD_REQUEST, "Loan Amount Exceeded Max Threshold!");
   }
 
   public ResponseEntity<?> getCustomerAccounts(String customerId){

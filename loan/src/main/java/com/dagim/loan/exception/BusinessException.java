@@ -1,13 +1,12 @@
 package com.dagim.loan.exception;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.server.ResponseStatusException;
 
-@ResponseStatus(value = HttpStatus.FAILED_DEPENDENCY)
-public class BusinessException extends RuntimeException{
+public class BusinessException extends ResponseStatusException {
 
-    public BusinessException(String errorMessage){
-        super(errorMessage);
+    public BusinessException(HttpStatus httpStatus, String errorMessage ){
+        super(httpStatus, errorMessage);
     }
 
 }
