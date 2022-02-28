@@ -17,5 +17,3 @@ spring:
         max-attempts: 30
         # max backoff interval
         max-interval: 8000
-
-

@@ -14,8 +14,8 @@ import org.springframework.stereotype.Repository;
 public interface BankAccountsRepository extends JpaRepository<BankAccounts, String> {
 
   @Query("SELECT CASE WHEN (count(accts) > 0) THEN true ELSE false END "
-      + "FROM BankAccounts accts WHERE accts.customerId = :customerId")
-  boolean customerExistsByCustomerId(@Param("customerId") String customerId);
+      + "FROM BankAccounts accts WHERE accts.customerId = :customerId AND accts.accountType = :accountType")
+  boolean accountExistsByCustomerId(@Param("customerId") String customerId, @Param("accountType") String accountType);
 
   @Query("select accts from BankAccounts accts where accts.customerId = :customerId")
   List<BankAccounts> findAccountsByCustomerId(@Param("customerId") String customerId);

@@ -4,7 +4,6 @@ spring:
 
     cloud:
         config:
-#            label: feature/app-properties
             server:
                 encrypt:
                     enabled: true
@@ -13,7 +12,8 @@ spring:
                     clone-on-start: true
                     ignoreLocalSshSettings: true
                     default-label: ${DEFAULT_BRANCH:feature/app-properties}
-                    searchPaths: banking-demo
+                    search-paths:
+                      - banking-demo/*
                     private-key: |
                         -----BEGIN RSA PRIVATE KEY-----
                         MIIJKAIBAAKCAgEArVo0R9RGCGaNJDY8pxIi4ZsUHTbYX+MSw62j8av3sWSMsnOO
@@ -66,6 +66,7 @@ spring:
                         yD4W/64LuMhYXjprRaBoJf/TABtRKh3DtW5YtDvnHiuSCFNalq8kZd5lMQw79YGK
                         AiGRTjhdIImlHqS/eadWZ7nZPGpvc6qmiboRG5bVN6h76dUWBC44X5T0b2c=
                         -----END RSA PRIVATE KEY-----
+
 management:
     endpoints:
         web:

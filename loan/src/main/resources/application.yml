@@ -16,11 +16,3 @@ spring:
         max-attempts: 30
         # max backoff interval
         max-interval: 8000
-
-get:
-  value: 199.11
-
-loan:
-  paylater:
-    frequency: "4"
-    maxAmount: "600"

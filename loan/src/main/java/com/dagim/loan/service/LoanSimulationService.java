@@ -1,6 +1,6 @@
 package com.dagim.loan.service;
 
-import com.dagim.loan.model.BusinessError;
+import com.dagim.loan.exception.BusinessException;
 import com.dagim.loan.model.LoanRepaymentPlan;
 import com.dagim.loan.model.SimulatedLoan;
 import com.dagim.loan.repository.BankAccountsClient;
@@ -12,7 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+
 
 @Service
 @Slf4j
@@ -26,18 +28,12 @@ public class LoanSimulationService {
   private long loanRepaymentFrequency;
   @Value("${loan.paylater.maxAmount}")
   private double maxAllowedLoanAmount;
-  @Value("${get.value}")
-  private double value;
 
   public LoanSimulationService(){
-    log.info("Loan repayment frequency .... " +loanRepaymentFrequency);
-    log.info("Loan max Allowed Loan Amount .... " +maxAllowedLoanAmount);
-    log.info("value from  .... " +value);
 
   }
   public SimulatedLoan simulateLoanPaymentPlan(String customerId, double loanAmount)
-      throws BusinessError {
-
+      throws BusinessException {
     SimulatedLoan simulatedLoan = new SimulatedLoan();
     LoanRepaymentPlan repaymentPlan;
     Set<LoanRepaymentPlan> repaymentPlanList = new HashSet<>();
@@ -54,9 +50,9 @@ public class LoanSimulationService {
         simulatedLoan.setCustomerId(customerId);
         simulatedLoan.setLoanAmount(loanAmount);
         simulatedLoan.setRepaymentPlan(repaymentPlanList);
-        return simulatedLoan;
+        return loanSimulationRepository.saveAndFlush(simulatedLoan);
     }else
-      throw new BusinessError("Invalid Loan Request Operation!");
+      throw new BusinessException("Invalid Loan Amount Requested!");
   }
 
   public ResponseEntity<?> getCustomerAccounts(String customerId){

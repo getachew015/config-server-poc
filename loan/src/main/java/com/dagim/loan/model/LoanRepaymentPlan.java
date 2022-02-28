@@ -1,11 +1,9 @@
 package com.dagim.loan.model;
 
 import java.time.OffsetDateTime;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,6 +22,7 @@ public class LoanRepaymentPlan {
   @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
   @Column(nullable = false, unique = true)
   private String loanRepaymentPlanId;
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private String simulationId;
   private OffsetDateTime loanDueDate;
   private double loanAmount;

@@ -1,9 +1,10 @@
 package com.dagim.loan.api;
 
 
-import com.dagim.loan.model.BusinessError;
+import com.dagim.loan.exception.BusinessException;
 import com.dagim.loan.repository.BankAccountsClient;
 import com.dagim.loan.service.LoanSimulationService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,9 +22,11 @@ public class LoanApi {
 
   @Autowired
   private BankAccountsClient client;
+  @Autowired
   private LoanSimulationService loanSimulationService;
 
   @GetMapping(path = "/customer/{customerId}", produces = "application/json")
+  @CircuitBreaker(name = "loanBreaker", fallbackMethod = "findCustomerServiceUnReachable")
   public ResponseEntity<?> findCustomerById(@PathVariable String customerId){
 
     return new ResponseEntity<>(client.getCustomerAccounts(customerId), HttpStatus.OK);
@@ -33,16 +36,18 @@ public class LoanApi {
   public ResponseEntity<?> simulateLoanRepaymentPlan(@RequestHeader(required = true) String customerId,
       @RequestHeader(required = true) double loanAmount){
 
-    log.info("customerId .... " +customerId);
-    log.info("Loan Amount .... " +loanAmount);
-
     try {
       return new ResponseEntity<>(loanSimulationService.simulateLoanPaymentPlan(customerId,loanAmount), HttpStatus.OK);
-    } catch (BusinessError businessError) {
-//      log.info(businessError.getMessage());
-      return new ResponseEntity<>("businessError.getMessage()", HttpStatus.BAD_REQUEST);
+    } catch (BusinessException businessException) {
+      return new ResponseEntity<>(businessException.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
+  }
+
+  public ResponseEntity<?> findCustomerServiceUnReachable(Exception exception ){
+    log.info("Exception Occurred ..."+exception.getMessage());
+    throw new BusinessException("Bank Accounts Service Unreachable !");
+//    return new ResponseEntity<>(, HttpStatus.FAILED_DEPENDENCY);
   }
 
 }
