@@ -10,7 +10,6 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.cucumber.junit.platform.engine.Cucumber;
 import io.cucumber.spring.CucumberContextConfiguration;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +24,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @CucumberContextConfiguration
 @SpringBootTest
 @ActiveProfiles(profiles = {"test"})
-@Cucumber
 @Slf4j
 public class LoanSimulationServiceTestStepdefs {
 
@@ -48,7 +46,7 @@ public class LoanSimulationServiceTestStepdefs {
   }
 
   @Then(
-      "The customer customerId {string} will get installment plan with four min installment amount {double} amounts")
+      "The customer with customerId {string} will get installment plan with four min installment amounts of {double}")
   public void iWillGetInstallmentPlanWithMinPaymentAmounts(String customerId, double loanAmount) {
     log.info("customerId ... {} and loan ... {}", customerId, loanAmount);
     Loan simulatedLoan = simulationService.simulateLoanPaymentPlan(customerId, loanAmount);

@@ -4,7 +4,7 @@ Feature: pay in four loan simulation
   Scenario Outline: Simulate a loan repayment plan for a qualified loan amount.
     Given A customer requests loan simulation for amount <loan-amount>
     When The loan-amount <loan-amount> is less than max-loan amount
-    Then The customer customerId <customerId> will get installment plan with four min installment amount <min-payment> amounts
+    Then The customer with customerId <customerId> will get installment plan with four min installment amounts of <min-payment>
     Examples:
       | customerId | loan-amount | min-payment |
       | 'cust1001' | 159.73      | 39.93       |
