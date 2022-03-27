@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: customer-accounts
+
+  config:
+    import: optional:configserver:http://localhost:8888
+    label: feature
+
+  profiles:
+    active: dev
+
+  cloud:
+    config:
+      fail-fast: true
+      retry:
+        # retry configuration retrieval up to 100 times
+        max-attempts: 30
+        # max backoff interval
+        max-interval: 8000

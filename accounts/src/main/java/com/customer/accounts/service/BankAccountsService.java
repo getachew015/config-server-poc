@@ -21,73 +21,75 @@ public class BankAccountsService {
 
   @Value("${accounts.loan.maxAmount}")
   private double loanAccountDefault;
+
   @Value("${accounts.checkings.minAmount}")
   private double checkingsAccountDefault;
+
   @Value("${accounts.savings.minAmount}")
   private double savingsAccountDefault;
 
-  private enum ACCOUNTTYPE {CHECKING,SAVING,LOAN};
+  private enum ACCOUNTTYPE {
+    CHECKING,
+    SAVING,
+    LOAN
+  };
 
-  @Autowired
-  private BankAccountsRepository bankAccountsRepository;
-  @Autowired
-  private CustomerRepository customerRepository;
+  @Autowired private BankAccountsRepository bankAccountsRepository;
+  @Autowired private CustomerRepository customerRepository;
 
+  public BankAccountsService() {}
 
-  public BankAccountsService(){
-  }
-
-  public boolean isNewCustomer(String customerId){
+  public boolean isNewCustomer(String customerId) {
     return customerRepository.customerExistsByCustomerId(customerId);
   }
 
-  public List<BankAccounts> getCustomerAccounts(String customerId){
+  public List<BankAccounts> getCustomerAccounts(String customerId) {
     return bankAccountsRepository.findAccountsByCustomerId(customerId);
   }
 
-  public BankAccounts customerAccountByType(String customerId, String accountType){
+  public BankAccounts customerAccountByType(String customerId, String accountType) {
 
     return bankAccountsRepository.findAccountsByCustomerId(customerId).stream()
-            .filter(acct -> acct.getAccountType().equals(accountType)).findFirst().get();
+        .filter(acct -> acct.getAccountType().equals(accountType))
+        .findFirst()
+        .get();
   }
 
-  public Customer createCustomerAccount(Customer customer, String accountType){
+  public Customer createCustomerAccount(Customer customer, String accountType) {
 
     Set<BankAccounts> accountsSet = new HashSet<>();
     BankAccounts account = new BankAccounts();
 
-    if(customerRepository.customerExistsByCustomerId(customer.getCustomerId())){
-      if(bankAccountsRepository.accountExistsByCustomerId(customer.getCustomerId(), accountType))
-        throw new BusinessException(HttpStatus.BAD_REQUEST,"Duplicate Account Opening Requested!" );
-      else{
+    if (customerRepository.customerExistsByCustomerId(customer.getCustomerId())) {
+      if (bankAccountsRepository.accountExistsByCustomerId(customer.getCustomerId(), accountType))
+        throw new BusinessException(HttpStatus.BAD_REQUEST, "Duplicate Account Opening Requested!");
+      else {
         account.setCustomerId(customer.getCustomerId());
         account.setAccountOpenDate(OffsetDateTime.now());
         account.setAccountType(accountType);
-        if(accountType.equals(ACCOUNTTYPE.CHECKING.toString()))
+        if (accountType.equals(ACCOUNTTYPE.CHECKING.toString()))
           account.setAccountBalance(checkingsAccountDefault);
-        else if(accountType.equals(ACCOUNTTYPE.SAVING.toString()))
+        else if (accountType.equals(ACCOUNTTYPE.SAVING.toString()))
           account.setAccountBalance(savingsAccountDefault);
-        else if(accountType.equals(ACCOUNTTYPE.LOAN.toString()))
+        else if (accountType.equals(ACCOUNTTYPE.LOAN.toString()))
           account.setAccountBalance(loanAccountDefault);
         bankAccountsRepository.saveAndFlush(account);
         return customerRepository.findCustomerByCustomerId(customer.getCustomerId());
       }
-    }else{
+    } else {
       account.setAccountType(accountType);
       account.setAccountOpenDate(OffsetDateTime.now());
       account.setCustomerId(customer.getCustomerId());
-      if(accountType.equals(ACCOUNTTYPE.CHECKING.toString()))
+      if (accountType.equals(ACCOUNTTYPE.CHECKING.toString()))
         account.setAccountBalance(checkingsAccountDefault);
-      else if(accountType.equals(ACCOUNTTYPE.SAVING.toString()))
+      else if (accountType.equals(ACCOUNTTYPE.SAVING.toString()))
         account.setAccountBalance(savingsAccountDefault);
-      else if(accountType.equals(ACCOUNTTYPE.LOAN.toString()))
+      else if (accountType.equals(ACCOUNTTYPE.LOAN.toString()))
         account.setAccountBalance(loanAccountDefault);
 
       accountsSet.add(account);
       customer.setBankAccounts(accountsSet);
       return customerRepository.saveAndFlush(customer);
     }
-
   }
-
 }

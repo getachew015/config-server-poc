@@ -22,18 +22,19 @@ import org.hibernate.annotations.GenericGenerator;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SimulatedLoan {
+public class Loan {
 
   @Id
   @GeneratedValue(generator = "UUID")
   @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
   @Column(nullable = false, unique = true)
-  private String simulationId;
+  private String loanId;
   private String customerId;
-  private OffsetDateTime loanSimulationDate;
+  private OffsetDateTime loanRequestDate;
   private double loanAmount;
+  private String installmentState;
   @OneToMany(cascade = CascadeType.ALL)
-  @JoinColumn(name = "simulationId", referencedColumnName = "simulationId")
+  @JoinColumn(name = "loanId", referencedColumnName = "loanId")
   private Set<LoanRepaymentPlan> repaymentPlan;
 
 }

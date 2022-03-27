@@ -1,0 +1,29 @@
+{
+  "namespace": "loan.avro",
+  "type": "record",
+  "name": "NewCustomerLoanEvent",
+  "fields": [
+    {
+      "name": "first_name",
+      "type": "string"
+    },
+    {
+      "name": "last_name",
+      "type": "string"
+    },
+    {
+      "name": "loan_amount",
+      "type": [
+        "double",
+        "null"
+      ]
+    },
+    {
+      "name": "loan_requested_date",
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  ]
+}

@@ -3,16 +3,6 @@ spring:
     name: loan-simulation
 
   config:
-    import: optional:configserver:http://localhost:8888
+    import: "optional:configserver:"
 
-  profiles:
-    active: dev
 
-  cloud:
-    config:
-      fail-fast: true
-      retry:
-        # retry configuration retrieval up to 100 times
-        max-attempts: 30
-        # max backoff interval
-        max-interval: 8000

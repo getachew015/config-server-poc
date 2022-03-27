@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: loan-simulation
+  config:
+    import: optional:configserver:http://localhost:8888
+#  profiles:
+#    active: local,dev
+  cloud:
+    config:
+      fail-fast: true
+      retry:
+        # retry configuration retrieval up to 100 times
+        max-attempts: 30
+        # max backoff interval
+        max-interval: 8000
+#  kafka:
+#    admin:
+#      properties:
+#        bootstrap.servers: localhost:9092, localhost:9093, localhost:9094
+#    producer:
+#      bootstrap-servers: localhost:9092, localhost:9093, localhost:9094
+#      acks: all
+#      retries: 5
+#      retry.backoff.ms: 150ms
+#
+#
+#newcustomer:
+#  loan-event:
+#    topic: new-customer-pi4-loan-requested

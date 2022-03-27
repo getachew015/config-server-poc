@@ -9,6 +9,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
@@ -18,6 +19,7 @@ import org.hibernate.annotations.GenericGenerator;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class BankAccounts implements Serializable {
 
   @Id
@@ -26,6 +28,7 @@ public class BankAccounts implements Serializable {
   private String accountNumber;
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private String customerId;
+
   private String accountType;
   private OffsetDateTime accountOpenDate;
   private double accountBalance;

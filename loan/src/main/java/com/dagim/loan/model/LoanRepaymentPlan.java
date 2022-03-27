@@ -23,7 +23,7 @@ public class LoanRepaymentPlan {
   @Column(nullable = false, unique = true)
   private String loanRepaymentPlanId;
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-  private String simulationId;
+  private String loanId;
   private OffsetDateTime loanDueDate;
   private double loanAmount;
 

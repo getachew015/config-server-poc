@@ -1,0 +1,98 @@
+spring:
+  application:
+    name: loan-simulation
+
+  config:
+    import: "optional:configserver:"
+
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: "jdbc:h2:mem:testdb"
+    driverClassName: "org.h2.Driver"
+    username: user
+    password:
+    hikari:
+      idle-timeout: 10000
+
+  jpa:
+    database-platform: "org.hibernate.dialect.H2Dialect"
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+    defer-datasource-initialization: true
+
+  sql:
+    init:
+      mode: EMBEDDED
+      data-locations: "classpath:/db-scripts/data.sql"
+
+  h2:
+    console.enabled: true
+    console.path: /h2-console
+
+  kafka:
+    admin:
+      properties:
+        bootstrap.servers: localhost:9092, localhost:9093, localhost:9094
+    producer:
+      bootstrap-servers: localhost:9092, localhost:9093, localhost:9094
+      acks: all
+      retries: 5
+      retry.backoff.ms: 150ms
+
+loan:
+  paylater:
+    frequency: 4
+    maxAmount: 600
+
+newcustomer:
+  loan-event:
+    topic: new-customer-pi4-loan-requested
+
+server:
+  port: 8180
+  error:
+    include-exception: false
+    include-message: ALWAYS
+    include-binding-errors: ALWAYS
+    include-stacktrace: ON_PARAM
+
+customer-accounts:
+  api:
+    url: http://localhost:8280/accounts/v1
+
+
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health
+
+  endpoint:
+    health:
+      show-details: ALWAYS
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true
+        eventConsumerBufferSize: 10
+        failureRateThreshold: 50
+        slidingWindowType: COUNT_BASED
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        permittedNumberOfCallsInHalfOpenState: 2
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 5s
+        recordExceptions:
+          - java.net.ConnectException
+          - feign.RetryableException
+        ignoreExceptions:
+          - com.dagim.loan.exception.BusinessException
+    instances:
+      loanBreaker:
+        baseConfig: default

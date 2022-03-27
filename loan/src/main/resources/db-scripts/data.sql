@@ -1,12 +1,12 @@
-insert into Simulated_Loan
-(simulation_id,customer_id, loan_simulation_date, loan_amount)
+insert into Loan
+(loan_id, customer_id, installment_state, loan_request_date, loan_amount)
 values
-('98d8-5aff1cate580','cust1001',CURRENT_TIMESTAMP(),339.32),
-('98d8-5aff1cate581','cust1002',CURRENT_TIMESTAMP(),115.43),
-('98d8-5aff1cate582','cust1003',CURRENT_TIMESTAMP(),239.39);
+('98d8-5aff1cate580','cust1001','SIMULATION' ,CURRENT_TIMESTAMP(),339.32),
+('98d8-5aff1cate581','cust1002','SIMULATION' ,CURRENT_TIMESTAMP(),115.43),
+('98d8-5aff1cate582','cust1003','SIMULATION' ,CURRENT_TIMESTAMP(),239.39);
 
 insert into Loan_Repayment_Plan
-(loan_Repayment_Plan_Id, simulation_id, loan_Due_Date, loan_Amount)
+(loan_Repayment_Plan_Id, loan_id, loan_Due_Date, loan_Amount)
 values
 ('asdee-2332a-321','98d8-5aff1cate580', CURRENT_TIMESTAMP()+14, 84.83),
 ('asdee-2332a-322','98d8-5aff1cate580', CURRENT_TIMESTAMP()+28, 84.83),

@@ -1,12 +1,10 @@
 package com.dagim.loan.repository;
 
-import com.dagim.loan.model.SimulatedLoan;
-import javax.transaction.Transactional;
+import com.dagim.loan.model.Loan;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import javax.transaction.Transactional;
 
-@Repository
 @Transactional
-public interface LoanSimulationRepository extends JpaRepository<SimulatedLoan, String> {
+public interface LoanSimulationRepository extends JpaRepository<Loan, String> {
 
 }
