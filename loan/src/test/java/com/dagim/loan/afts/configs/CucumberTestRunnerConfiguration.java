@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.context.EmbeddedKafka;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 
 @Slf4j
@@ -21,6 +22,7 @@ import org.springframework.test.context.ActiveProfiles;
     ports = {9092, 9093, 9094, 9095},
     partitions = 3,
     count = 4)
+@DirtiesContext
 public class CucumberTestRunnerConfiguration {
 
   @Autowired private EmbeddedKafkaBroker kafkaBroker;
