@@ -1,4 +1,4 @@
-package com.dagim.loan.afts;
+package com.dagim.loan.afts.stepDefs;
 
 import com.dagim.loan.api.LoanApi;
 import com.dagim.loan.configuration.LoanConfigDetail;
@@ -10,20 +10,14 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.cucumber.spring.CucumberContextConfiguration;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@CucumberContextConfiguration
-@SpringBootTest
-@ActiveProfiles(profiles = {"test"})
 @Slf4j
 public class LoanSimulationServiceTestStepdefs {
 
@@ -76,8 +70,7 @@ public class LoanSimulationServiceTestStepdefs {
               () -> {
                 loanApi.simulateLoanRepaymentPlan(unQualifiedCustomerId, unQualifiedLoan);
               });
-      assertThat(businessException)
-          .isEqualTo(thrownException.getMessage());
+      assertThat(businessException).isEqualTo(thrownException.getMessage());
     } catch (BusinessException exception) {
       log.error("cucumber AFT test thrown ... ", exception);
     }

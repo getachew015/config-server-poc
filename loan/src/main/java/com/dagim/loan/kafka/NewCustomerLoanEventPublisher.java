@@ -1,10 +1,10 @@
 package com.dagim.loan.kafka;
 
+import loan.avro.NewCustomerLoanEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
-import loan.avro.NewCustomerLoanEvent;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 import org.springframework.util.concurrent.ListenableFuture;
