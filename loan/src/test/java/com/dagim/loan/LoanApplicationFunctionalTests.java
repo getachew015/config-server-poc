@@ -1,12 +1,16 @@
 package com.dagim.loan;
 
-import io.cucumber.junit.Cucumber;
-import io.cucumber.junit.CucumberOptions;
-import org.junit.runner.RunWith;
+import org.junit.platform.suite.api.ConfigurationParameter;
+import org.junit.platform.suite.api.IncludeEngines;
+import org.junit.platform.suite.api.SelectClasspathResource;
+import org.junit.platform.suite.api.Suite;
 
-@RunWith(Cucumber.class)
-@CucumberOptions(
-    glue = {"com.dagim.loan.afts.stepDefs"},
-    features = {"src/test/resources/features"},
-    plugin = {"pretty", "html:build/reports/tests/cucumber/cucumber-report.html"})
+import static io.cucumber.junit.platform.engine.Constants.GLUE_PROPERTY_NAME;
+import static io.cucumber.junit.platform.engine.Constants.PLUGIN_PROPERTY_NAME;
+
+@Suite
+@IncludeEngines("cucumber")
+@SelectClasspathResource("aft.features")
+@ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "com.dagim.loan.afts")
+@ConfigurationParameter(key = PLUGIN_PROPERTY_NAME, value = "pretty")
 public class LoanApplicationFunctionalTests {}
