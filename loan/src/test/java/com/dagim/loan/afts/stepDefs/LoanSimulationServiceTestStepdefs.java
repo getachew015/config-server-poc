@@ -12,6 +12,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Set;
 
@@ -24,6 +25,7 @@ public class LoanSimulationServiceTestStepdefs {
   @Autowired private LoanSimulationService simulationService;
   @Autowired private LoanConfigDetail loanConfigDetail;
   @Autowired private LoanApi loanApi;
+  @Autowired private MockMvc mockMvc;
   private String unQualifiedCustomerId;
   private double unQualifiedLoan;
 
